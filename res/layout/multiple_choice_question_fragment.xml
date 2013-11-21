@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Multiple Choice Question" />
+ 
+    <TextView
+        android:id="@+id/mcq_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
+        
+        <RadioGroup
+	        android:id="@+id/mcq_Options"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1" >
+
+	        <RadioButton
+	        	android:id="@+id/mcq_option1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	
+	        <RadioButton
+	            android:id="@+id/mcq_option2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	
+	        <RadioButton
+	            android:id="@+id/mcq_option3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	            
+	        <RadioButton
+	            android:id="@+id/mcq_option4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+        
+        </RadioGroup>
+        
+        <com.loopj.android.image.SmartImageView
+		    android:id="@+id/mcq_ques_image"
+		    android:layout_width="0dip"
+		    android:layout_height="150sp" 
+		    android:layout_weight="1" />
+        	
+     </LinearLayout>
+    
+
+     <Button
+        android:id="@+id/mcq_finalize_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/finalize" />
+     
+    <Button
+        android:id="@+id/next_mcq_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/next" />
+
+        
+
+</LinearLayout>
