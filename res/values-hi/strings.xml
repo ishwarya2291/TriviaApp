@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">सामान्य ज्ञान एपीपी</string>
+    <string name="play">खेल!</string>
+    <string name="trivia">सामान्य ज्ञान एपीपी</string>
+    <string name="start">खेल शुरू करने के लिए, खेलने पर टैप करें !</string>
+    <string name="high_score">उच्च स्कोर:</string>
+    <string name="next">अगला</string>
+    <string name="finalize">अंतिम जवाब</string>
+    <string name="highScore">उच्च स्को : </string>
+
+</resources>

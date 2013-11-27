@@ -1,7 +1,11 @@
 package com.example.triviaapp;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +22,14 @@ import com.loopj.android.image.SmartImageView;
 
 public class MultipleChoiceQuestionFragment extends Fragment {
 
-	private Button nextButton, finalizeButton;
-	private RadioGroup mcqOptions;
-	private RadioButton option1Button, option2Button, option3Button, option4Button;
-	private TextView questionTextView;
-	private SmartImageView questionImage;
+	public static final String PREFS = "allPrefs";
+	private static Button nextButton, finalizeButton;
+	private static RadioGroup mcqOptions;
+	private static RadioButton option1Button, option2Button, option3Button, option4Button;
+	private static TextView questionTextView;
+	private static SmartImageView questionImage;
 	private static String mQuestion, mQuesImageUrl, mOption1, mOption2, mOption3, mOption4, mCorrectAnswer;
+	int next = 0;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,41 +58,58 @@ public class MultipleChoiceQuestionFragment extends Fragment {
 		}
 		
 		finalizeButton.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				
-				if(option1Button.isEnabled() && mOption1.equals(mCorrectAnswer)){
-					Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
-
-					option1Button.setTypeface(null, Typeface.BOLD);
-					option1Button.setTextColor(0xff00ff00);
-				}else if(option2Button.isEnabled() && mOption2.equals(mCorrectAnswer)){
-					Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
-
-					option2Button.setTypeface(null, Typeface.BOLD);
-					option2Button.setTextColor(0xff00ff00);
-				}else if(option3Button.isEnabled() && mOption3.equals(mCorrectAnswer)){
-					Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show();
-
-					option3Button.setTypeface(null, Typeface.BOLD);
-					option3Button.setTextColor(0xff00ff00);
-				}else if(option4Button.isEnabled() && mOption4.equals(mCorrectAnswer)){
-					Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show();
-					option4Button.setTypeface(null, Typeface.BOLD);
-					option4Button.setTextColor(0xff00ff00);
+				next = 1;
+				if(option1Button.isChecked() || option2Button.isChecked() || option3Button.isChecked() || option4Button.isChecked()){
+					finalizeButton.setEnabled(false);
+					if(option1Button.isChecked() && mOption1.equals(mCorrectAnswer)){
+						option1Button.setTypeface(null, Typeface.BOLD);
+						option1Button.setTextColor(0xff00ff00);
+						playCorrectSound();
+						TriviaActivity.score++;
+					}else if(option2Button.isChecked() && mOption2.equals(mCorrectAnswer)){
+						option2Button.setTypeface(null, Typeface.BOLD);
+						option2Button.setTextColor(0xff00ff00);
+						playCorrectSound();
+						TriviaActivity.score++;
+					}else if(option3Button.isChecked() && mOption3.equals(mCorrectAnswer)){
+						option3Button.setTypeface(null, Typeface.BOLD);
+						option3Button.setTextColor(0xff00ff00);
+						playCorrectSound();
+						TriviaActivity.score++;
+					}else if(option4Button.isChecked() && mOption4.equals(mCorrectAnswer)){
+						option4Button.setTypeface(null, Typeface.BOLD);
+						option4Button.setTextColor(0xff00ff00);
+						playCorrectSound();
+						TriviaActivity.score++;
+					}else{
+						Toast.makeText(getActivity(), "Ans: "+ mCorrectAnswer, Toast.LENGTH_SHORT).show();
+						playWrongSound();
+					}
+				}else{
+					Builder alert = new AlertDialog.Builder(getActivity());
+		        	alert.setMessage("Select an answer");
+		        	alert.setPositiveButton("OK",null);
+		        	alert.show();
 				}
-				
 			}
 		});
 		
 		nextButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((TriviaActivity)getActivity()).displayQuestion();
+				if(next == 1){
+					next = 0;
+					((TriviaActivity)getActivity()).displayQuestion();
+				}else{
+					Builder alert = new AlertDialog.Builder(getActivity());
+		        	alert.setMessage("Please answer the question!");
+		        	alert.setPositiveButton("OK",null);
+		        	alert.show(); 
+				}	
 			}
 		});
-	
 		return mLinearLayout;
 	}
 	
@@ -99,4 +122,33 @@ public class MultipleChoiceQuestionFragment extends Fragment {
 		mOption4 = option4;
 		mCorrectAnswer = correctAns;
 	}
+	
+	public void playCorrectSound(){
+		MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.correct);
+		mediaPlayer.start();
+	}
+	
+	public void playWrongSound(){
+		MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.wrong);
+		mediaPlayer.start();
+	}
+	
+	@Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        populateViewForOrientation(inflater, (ViewGroup) getView());
+    }
+	
+	private void populateViewForOrientation(LayoutInflater inflater, ViewGroup viewGroup) {
+        viewGroup.removeAllViewsInLayout();
+        View subview = inflater.inflate(R.layout.multiple_choice_question_fragment, viewGroup);
+ 
+        // Find your buttons in subview, set up onclicks, set up callbacks to your parent fragment or activity here.
+        
+        // You can create ViewHolder or separate method for that.
+        // example of accessing views: TextView textViewExample = (TextView) view.findViewById(R.id.text_view_example);
+        // textViewExample.setText("example");
+    }
+	
 }
